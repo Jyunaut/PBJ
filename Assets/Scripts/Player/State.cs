@@ -139,11 +139,13 @@ namespace Player
 
         public override void EnterState()
         {
+            NoiseEvents.Instance.DragTriggerEnter();
             Controller.ApplySpeedMultiplier(0.5f);
         }
 
         public override void DoStateBehaviour()
         {
+            NoiseEvents.Instance.DragTriggerStay();
             Controller.GetComponent<SpriteRenderer>().color = Color.blue;
         }
 
@@ -158,6 +160,7 @@ namespace Player
         public override void ExitState()
         {
             Controller.ResetSpeedMultiplier();
+            NoiseEvents.Instance.DragTriggerExit();
         }
 
         public override void Transitions()
