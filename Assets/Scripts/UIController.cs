@@ -25,7 +25,7 @@ public class UIController : MonoBehaviour
             Debug.Log("Pressed! Pause");
             UIManager.Instance.SetState(UIManager.GameState.Pause);
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.Backspace))
         {
             Debug.Log("Pressed! Force End");
             UIManager.Instance.SetState(UIManager.GameState.End);
