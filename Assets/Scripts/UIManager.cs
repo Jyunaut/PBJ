@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     }
 
     public GameState state = GameState.Menu;
-    private UIController controller;
+    private UIController _controller;
     [SerializeField] private GameObject _gameUI;
     [SerializeField] private GameObject _menuUI;
     [SerializeField] private GameObject _pauseUI;
@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(this);
-        controller = GetComponent<UIController>();
+        _controller = GetComponent<UIController>();
         UpdateScene();
     }
 
@@ -72,10 +72,12 @@ public class UIManager : MonoBehaviour
             case GameState.Pause:
                 HideUI(_gameUI, _menuUI, _endUI);
                 ShowUI(_pauseUI);
+                Time.timeScale = 0f;
                 break;
             case GameState.Resume:
                 HideUI(_menuUI, _pauseUI, _endUI);
                 ShowUI(_gameUI);
+                Time.timeScale = 1f;
                 break;
             case GameState.Reset:
                 LoadScene(0);
