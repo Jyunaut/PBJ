@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
-    public enum GameState
+    public enum States
     {
         play,
         End,
@@ -16,10 +16,11 @@ public class UIManager : MonoBehaviour
         Menu,
         Pause,
         Resume,
-        Reset
+        Reset,
+        Quit
     }
 
-    public GameState state = GameState.Menu;
+    public States state = States.Menu;
     private UIController controller;
     [SerializeField] private GameObject _gameUI;
     [SerializeField] private GameObject _menuUI;
@@ -43,7 +44,7 @@ public class UIManager : MonoBehaviour
         UpdateScene();
     }
 
-    public void SetState(GameState newState)
+    public void SetState(States newState)
     {
         state = newState;
         UpdateScene();
@@ -53,35 +54,38 @@ public class UIManager : MonoBehaviour
     {
         switch (state)
         {
-            case GameState.play:
+            case States.play:
                 HideUI(_menuUI, _pauseUI, _endUI);
                 ShowUI(_gameUI);
                 break;
-            case GameState.End:
+            case States.End:
                 HideUI(_gameUI, _menuUI, _pauseUI);
                 ShowUI(_endUI);
                 break;
-            case GameState.Caught:
+            case States.Caught:
                 HideUI(_gameUI, _menuUI, _pauseUI);
                 ShowUI(_endUI);
                 break;
-            case GameState.Menu:
+            case States.Menu:
                 HideUI(_gameUI, _pauseUI, _endUI);
                 ShowUI(_menuUI);
                 break;
-            case GameState.Pause:
+            case States.Pause:
                 HideUI(_gameUI, _menuUI, _endUI);
                 ShowUI(_pauseUI);
                 Time.timeScale = 0f;
                 break;
-            case GameState.Resume:
+            case States.Resume:
                 HideUI(_menuUI, _pauseUI, _endUI);
                 ShowUI(_gameUI);
                 Time.timeScale = 1f;
                 break;
-            case GameState.Reset:
+            case States.Reset:
                 LoadScene(0);
-                SetState(GameState.Menu);
+                SetState(States.Menu);
+                break;
+            case States.Quit:
+                Application.Quit();
                 break;
             default:
                 Debug.Log("Invalid State");
