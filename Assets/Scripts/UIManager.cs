@@ -72,10 +72,12 @@ public class UIManager : MonoBehaviour
             case GameState.Pause:
                 HideUI(_gameUI, _menuUI, _endUI);
                 ShowUI(_pauseUI);
+                Time.timeScale = 0f;
                 break;
             case GameState.Resume:
                 HideUI(_menuUI, _pauseUI, _endUI);
                 ShowUI(_gameUI);
+                Time.timeScale = 1f;
                 break;
             case GameState.Reset:
                 LoadScene(0);
