@@ -135,37 +135,47 @@ namespace Player
 
     class Dragging : State
     {
+        private const float _verticalSpeedRatio = 0.75f;
+
         public Dragging(Controller controller) : base(controller) {}
 
         public override void EnterState()
         {
-            NoiseEvents.Instance.DragTriggerEnter();
             Controller.ApplySpeedMultiplier(0.5f);
+            //NoiseEvents.Instance.DragTriggerEnter();
         }
 
         public override void DoStateBehaviour()
         {
-            NoiseEvents.Instance.DragTriggerStay();
             Controller.GetComponent<SpriteRenderer>().color = Color.blue;
+            //NoiseEvents.Instance.DragTriggerStay();
         }
 
         public override void DoStateBehaviourFixedUpdate()
         {
-            Vector2 direction = new Vector2(Input.GetAxisRaw(PlayerInput.Horizontal), Input.GetAxisRaw(PlayerInput.Vertical) * 0.75f);
+            if ((Mathf.Abs(Input.GetAxisRaw(PlayerInput.Horizontal)) < Mathf.Epsilon
+                && Mathf.Abs(Input.GetAxisRaw(PlayerInput.Vertical)) < Mathf.Epsilon)
+                || Controller.SelectedObject == null)
+                return;
+
+            Vector2 direction = new Vector2(Input.GetAxisRaw(PlayerInput.Horizontal), Input.GetAxisRaw(PlayerInput.Vertical) * _verticalSpeedRatio);
             Vector2 velocity = direction * Controller.WalkSpeed * Time.fixedDeltaTime;
+
             Controller.Rigidbody2d.MovePosition(Controller.Rigidbody2d.position + velocity);
-            Controller.SelectedObject.GetComponent<Rigidbody2D>().MovePosition(Controller.SelectedObject.GetComponent<Rigidbody2D>().position + velocity);
+            Controller.SelectedObject.GetComponent<Rigidbody2D>().MovePosition((Vector2)Controller.SelectedObject.transform.position + velocity);
         }
 
         public override void ExitState()
         {
             Controller.ResetSpeedMultiplier();
-            NoiseEvents.Instance.DragTriggerExit();
+            //NoiseEvents.Instance.DragTriggerExit();
         }
 
         public override void Transitions()
         {
-            if (Input.GetButton(PlayerInput.Interact)) return;
+            if (Input.GetButton(PlayerInput.Interact)
+                && Controller.SelectedObject != null)
+                return;
             if (Idle()) {}
             else if (Walk()) {}
             else if (Run()) {}
