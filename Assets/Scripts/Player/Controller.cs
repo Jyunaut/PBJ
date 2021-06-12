@@ -53,6 +53,8 @@ namespace Player
             switch (col.tag)
             {
                 case Tag.Draggable:
+                    if (_currentState.GetType() == typeof(Player.Dragging))
+                        break;
                     SelectedObject = col.gameObject;
                     break;
             }
@@ -63,6 +65,8 @@ namespace Player
             switch (col.tag)
             {
                 case Tag.Draggable:
+                    if (col.gameObject != SelectedObject)
+                        break;
                     SelectedObject = null;
                     break;
             }
