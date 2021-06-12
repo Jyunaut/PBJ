@@ -6,6 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+<<<<<<< HEAD
     path: Assets/Scenes/TestScene-Martin.unity
+=======
+    path: Assets/Scenes/Game.unity
+    guid: f1a6ce8b7e174564fb583efd51263563
+  - enabled: 1
+    path: Assets/Scenes/End.unity
+>>>>>>> 28aa45d57723535249f0b783798e5a3b5ce3fc88
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
