@@ -93,7 +93,7 @@ namespace Player
             _currentState.Transitions();
 
             if (Input.GetButtonDown(PlayerInput.Interact) && SelectedObject != null)
-                SelectedObject.GetComponent<IInteractable>()?.Interact();
+                SelectedObject.GetComponent<IInteractable>()?.Interact(gameObject);
 
             AdjustDirection();
         }

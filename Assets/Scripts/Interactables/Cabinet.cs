@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Cabinet : MonoBehaviour, IInteractable
+public class Cabinet : MonoBehaviour
 {
     public void Interact()
     {
