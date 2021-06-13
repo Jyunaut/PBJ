@@ -51,3 +51,6 @@ TagManager:
   - name: Screen Effect
     uniqueID: 442805211
     locked: 0
+  - name: Foreground
+    uniqueID: 3944685415
+    locked: 0

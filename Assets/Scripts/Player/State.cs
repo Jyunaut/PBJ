@@ -45,7 +45,7 @@ namespace Player
 
         protected bool Dragging()
         {
-            if (Input.GetButton(PlayerInput.Interact) && Controller.SelectedObject != null)
+            if (Input.GetButtonDown(PlayerInput.Interact) && Controller.SelectedObject != null)
             {
                 if (!Controller.SelectedObject.CompareTag(Tag.Draggable)) return false;
                 Controller.SetState(new Dragging(Controller));
@@ -59,7 +59,7 @@ namespace Player
     {
         public Idle(Controller controller) : base(controller) {}
 
-        public override void DoStateBehaviour()
+        public override void EnterState()
         {
             Controller.Animator.Play("Idle");
         }
@@ -89,9 +89,13 @@ namespace Player
                 Controller.Direction = new Vector2(Input.GetAxisRaw(PlayerInput.Horizontal), 1);
         }
 
-        public override void DoStateBehaviour()
+        public override void EnterState()
         {
             Controller.Animator.Play("Walk");
+        }
+
+        public override void DoStateBehaviour()
+        {
             SetDirection();
         }
 
@@ -112,9 +116,9 @@ namespace Player
     {
         public Run(Controller controller) : base(controller) {}
 
-        public override void DoStateBehaviour()
+        public override void EnterState()
         {
-            base.DoStateBehaviour();
+            Controller.Animator.Play("Run");
         }
 
         public override void DoStateBehaviourFixedUpdate()
@@ -140,12 +144,19 @@ namespace Player
         public override void EnterState()
         {
             Controller.ApplySpeedMultiplier(0.5f);
-            //NoiseEvents.Instance.DragTriggerEnter();
         }
 
         public override void DoStateBehaviour()
         {
-            //NoiseEvents.Instance.DragTriggerStay();
+            if ((Mathf.Abs(Input.GetAxisRaw(PlayerInput.Horizontal)) < Mathf.Epsilon
+                && Mathf.Abs(Input.GetAxisRaw(PlayerInput.Vertical)) < Mathf.Epsilon))
+            {
+                Controller.Animator.Play("DragHold");
+            }
+            else
+            {
+                Controller.Animator.Play("DragWalk");
+            }
         }
 
         public override void DoStateBehaviourFixedUpdate()
@@ -153,25 +164,31 @@ namespace Player
             if ((Mathf.Abs(Input.GetAxisRaw(PlayerInput.Horizontal)) < Mathf.Epsilon
                 && Mathf.Abs(Input.GetAxisRaw(PlayerInput.Vertical)) < Mathf.Epsilon)
                 || Controller.SelectedObject == null)
+            {
+                Controller.SelectedObject.GetComponent<AudioSource>().Stop();
                 return;
+            }
 
             Vector2 direction = new Vector2(Input.GetAxisRaw(PlayerInput.Horizontal), Input.GetAxisRaw(PlayerInput.Vertical) * _verticalSpeedRatio);
             Vector2 velocity = direction * Controller.WalkSpeed * Time.fixedDeltaTime;
 
             Controller.Rigidbody2d.MovePosition(Controller.Rigidbody2d.position + velocity);
             Controller.SelectedObject.GetComponent<Rigidbody2D>().MovePosition((Vector2)Controller.SelectedObject.transform.position + velocity);
+
+            if (!Controller.SelectedObject.GetComponent<AudioSource>().isPlaying)
+                Controller.SelectedObject.GetComponent<AudioSource>().Play();
         }
 
         public override void ExitState()
         {
             Controller.ResetSpeedMultiplier();
-            //NoiseEvents.Instance.DragTriggerExit();
+            Controller.SelectedObject.GetComponent<AudioSource>().Stop();
         }
 
         public override void Transitions()
         {
-            if (Input.GetButton(PlayerInput.Interact)
-                && Controller.SelectedObject != null)
+            if (!Input.GetButtonDown(PlayerInput.Interact)
+                || Controller.SelectedObject == null)
                 return;
             if (Idle()) {}
             else if (Walk()) {}
