@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     public void Spooked()
     {
         UIManager.Instance.SetState(UIManager.GameState.Caught);
-        endPrompt.text = "You are too scared in the night";
+        endPrompt.text = "You are too scared of the night";
         endPrompt.gameObject.SetActive(true);
     }
 

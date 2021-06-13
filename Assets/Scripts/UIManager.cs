@@ -15,8 +15,7 @@ public class UIManager : MonoBehaviour
         Caught,
         Menu,
         Pause,
-        Resume,
-        Reset
+        Resume
     }
 
     public GameState state = GameState.Menu;
@@ -83,10 +82,6 @@ public class UIManager : MonoBehaviour
                 ShowUI(_gameUI);
                 Time.timeScale = 1f;
                 break;
-            case GameState.Reset:
-                LoadScene(0);
-                SetState(GameState.Menu);
-                break;
             default:
                 Debug.Log("Invalid State");
                 break;
@@ -97,7 +92,7 @@ public class UIManager : MonoBehaviour
     {
         AsyncOperation asyncload = SceneManager.LoadSceneAsync(scene);
 
-        while(!asyncload.isDone)
+        while (!asyncload.isDone)
         {
             yield return null;
         }
@@ -105,13 +100,13 @@ public class UIManager : MonoBehaviour
 
     private void HideUI(params GameObject[] ui)
     {
-        foreach(GameObject n in ui)
+        foreach (GameObject n in ui)
             n.SetActive(false);
     }
 
     private void ShowUI(params GameObject[] ui)
     {
-        foreach(GameObject n in ui)
+        foreach (GameObject n in ui)
             n.SetActive(true);
     }
 

@@ -8,13 +8,11 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private Button _playBtn;
     [SerializeField] private Button _resumeBtn;
-    [SerializeField] private Button _resetBtn;
     
     private void Start()
     {
         _playBtn?.onClick.AddListener(OnClickPlay);
         _resumeBtn?.onClick.AddListener(OnClickResume);
-        _resetBtn?.onClick.AddListener(OnClickReset);
     }
 
     private void Update()
@@ -42,11 +40,5 @@ public class UIController : MonoBehaviour
     {
         Debug.Log("Clicked! Resume");
         UIManager.Instance.SetState(UIManager.GameState.Resume);
-    }
-
-    private void OnClickReset()
-    {
-        Debug.Log("Clicked! Reset");
-        UIManager.Instance.SetState(UIManager.GameState.Reset);
     }
 }
