@@ -61,7 +61,7 @@ namespace Player
 
         public override void DoStateBehaviour()
         {
-            Controller.GetComponent<SpriteRenderer>().color = Color.white;
+            Controller.Animator.Play("Idle");
         }
 
         public override void Transitions()
@@ -87,12 +87,11 @@ namespace Player
         {
             if (Mathf.Abs(Input.GetAxisRaw(PlayerInput.Horizontal)) > 0)
                 Controller.Direction = new Vector2(Input.GetAxisRaw(PlayerInput.Horizontal), 1);
-            Controller.transform.localScale = Controller.Direction;
         }
 
         public override void DoStateBehaviour()
         {
-            Controller.GetComponent<SpriteRenderer>().color = Color.yellow;
+            Controller.Animator.Play("Walk");
             SetDirection();
         }
 
@@ -116,7 +115,6 @@ namespace Player
         public override void DoStateBehaviour()
         {
             base.DoStateBehaviour();
-            Controller.GetComponent<SpriteRenderer>().color = Color.red;
         }
 
         public override void DoStateBehaviourFixedUpdate()
@@ -147,7 +145,6 @@ namespace Player
 
         public override void DoStateBehaviour()
         {
-            Controller.GetComponent<SpriteRenderer>().color = Color.blue;
             //NoiseEvents.Instance.DragTriggerStay();
         }
 

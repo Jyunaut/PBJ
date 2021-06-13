@@ -22,11 +22,11 @@ namespace Player
         }
         public void ResetSpeedMultiplier() => _speedMultiplier = 1f;
 
-        // Player Conditionals
-        [field: SerializeField] public Vector2 Direction { get; set; } = new Vector2(1,1);
+        public Vector2 Direction { get; set; }
 
         // Misc
         [field: SerializeField] public GameObject SelectedObject { get; private set; }
+        [field: SerializeField] public GameObject HeldItem { get; private set; }
 
         private State _currentState;
 
@@ -39,6 +39,7 @@ namespace Player
         void Start()
         {
             SetState(new Idle(this));
+            Direction = Vector3.one;
         }
 
         public void SetState(State state)
@@ -48,13 +49,21 @@ namespace Player
             _currentState.EnterState();
         }
 
+        private void AdjustDirection()
+        {
+            if ((Direction.x < 0 && transform.localScale.x > 0)
+                || Direction.x > 0 && transform.localScale.x < 0)
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+
         void OnTriggerStay2D(Collider2D col)
         {
+            if (_currentState.GetType() == typeof(Player.Dragging)) return;
             switch (col.tag)
             {
                 case Tag.Draggable:
-                    if (_currentState.GetType() == typeof(Player.Dragging))
-                        break;
+                case Tag.HidingSpot:
+                case Tag.Stool:
                     SelectedObject = col.gameObject;
                     break;
             }
@@ -62,11 +71,12 @@ namespace Player
 
         void OnTriggerExit2D(Collider2D col)
         {
+            if (col.gameObject != SelectedObject) return;
             switch (col.tag)
             {
                 case Tag.Draggable:
-                    if (col.gameObject != SelectedObject)
-                        break;
+                case Tag.HidingSpot:
+                case Tag.Stool:
                     SelectedObject = null;
                     break;
             }
@@ -81,6 +91,11 @@ namespace Player
         {
             _currentState.DoStateBehaviour();
             _currentState.Transitions();
+
+            if (Input.GetButtonDown(PlayerInput.Interact) && SelectedObject != null)
+                SelectedObject.GetComponent<IInteractable>()?.Interact();
+
+            AdjustDirection();
         }
     }
 }
