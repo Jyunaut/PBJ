@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Draggable
+  - Hiding Spot
+  - Stool
+  - Ingredient
   layers:
   - Default
   - TransparentFX
@@ -12,7 +15,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Post Processing
   - 
   - 
   - 
@@ -39,6 +42,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 105148389
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Screen Effect
+    uniqueID: 442805211
     locked: 0
