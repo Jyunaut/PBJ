@@ -119,6 +119,7 @@ namespace Player
         public override void EnterState()
         {
             Controller.Animator.Play("Run");
+            NoiseEvents.Instance.RunTriggerEnter();
         }
 
         public override void DoStateBehaviourFixedUpdate()
@@ -133,6 +134,11 @@ namespace Player
             if (Input.GetButton(PlayerInput.Run)) return;
             if (Walk()) {}
         }
+
+        public override void ExitState()
+        {
+            NoiseEvents.Instance.NoiseExit();
+        }
     }
 
     class Dragging : State
@@ -144,6 +150,7 @@ namespace Player
         public override void EnterState()
         {
             Controller.ApplySpeedMultiplier(0.5f);
+            NoiseEvents.Instance.DragTriggerEnter();
         }
 
         public override void DoStateBehaviour()
@@ -183,6 +190,7 @@ namespace Player
         {
             Controller.ResetSpeedMultiplier();
             Controller.SelectedObject.GetComponent<AudioSource>().Stop();
+            NoiseEvents.Instance.NoiseExit();
         }
 
         public override void Transitions()

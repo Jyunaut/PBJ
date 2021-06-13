@@ -5,45 +5,55 @@ using UnityEngine;
 // For debugging
 using UnityEngine.UI;
 
-[RequireComponent(typeof(NoiseEvents))]
 public class NoiseController : MonoBehaviour
 {
+    public Slider debugSlider;
     public float MIN = 0f, MAX = 100f; 
-    [SerializeField]private float _noise = 0.0f;
-    [SerializeField]private Slider debugSlider;
+    public float noise = 0.0f;
+    public float defaultIncrement = 0.5f;
+    public float increment = 0.5f;
 
     private void Start()
     {
-        NoiseEvents.Instance.onDragTriggerEnter += OnTriggerDragEnter;
-        NoiseEvents.Instance.onDragTriggerStay += OnTriggerDragStay;
-        NoiseEvents.Instance.onDragTriggerExit += OnTriggerDragExit;
+        NoiseEvents.Instance.onTriggerDragEnter += OnTriggerDragEnter;
+        NoiseEvents.Instance.onRunTriggerEnter += OnTriggerRunEnter;
+        NoiseEvents.Instance.onNoiseExit += OnNoiseExit;
         
         //debug
         debugSlider.minValue = MIN; 
         debugSlider.maxValue = MAX;
-        _noise = 0.0f;
+        noise = 0.0f;
     }
 
     private void Update()
     {
         //debug
-        _noise += Time.deltaTime * 0.15f;
+        noise += Time.deltaTime * increment;
         // Debug.Log(_noise);
-        debugSlider.value = Mathf.Clamp(_noise, MIN, MAX);
+        debugSlider.value = Mathf.Clamp(noise, MIN, MAX);
+
+        if(noise >= 50f && noise <= 51f)
+        {
+            NoiseManager.Instance.SetState(NoiseManager.MentalState.stress);
+        }
+        if(noise >= 70f && noise <= 71f)
+        {
+            NoiseManager.Instance.SetState(NoiseManager.MentalState.panic);
+        }
     }
 
     private void OnTriggerDragEnter()
     {
-        Debug.Log("BOOOOOM");
+        increment = 12f;
     }
 
-    private void OnTriggerDragStay()
+    private void OnTriggerRunEnter()
     {
-        Debug.Log("CREEEEEEEEEEEEK");
+        increment = 8f;
     }
 
-    private void OnTriggerDragExit()
+    private void OnNoiseExit()
     {
-        Debug.Log("CRAAAAAAACKLE");
+        increment = defaultIncrement;
     }
 }

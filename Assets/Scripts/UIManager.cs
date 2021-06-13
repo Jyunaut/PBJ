@@ -56,6 +56,7 @@ public class UIManager : MonoBehaviour
             case GameState.play:
                 HideUI(_menuUI, _pauseUI, _endUI);
                 ShowUI(_gameUI);
+                Time.timeScale = 1f;
                 break;
             case GameState.End:
                 HideUI(_gameUI, _menuUI, _pauseUI);
@@ -68,6 +69,7 @@ public class UIManager : MonoBehaviour
             case GameState.Menu:
                 HideUI(_gameUI, _pauseUI, _endUI);
                 ShowUI(_menuUI);
+                Time.timeScale = 0f;
                 break;
             case GameState.Pause:
                 HideUI(_gameUI, _menuUI, _endUI);

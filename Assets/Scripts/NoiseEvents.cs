@@ -17,30 +17,30 @@ public class NoiseEvents : MonoBehaviour
         Instance = this;
     }
 
-    public event Action onDragTriggerEnter;
+    public event Action onTriggerDragEnter;
     public void DragTriggerEnter()
     {
-        if (onDragTriggerEnter != null)
+        if (onTriggerDragEnter != null)
         {
-            onDragTriggerEnter();
+            onTriggerDragEnter();
         }
     }
 
-    public event Action onDragTriggerStay;
-    public void DragTriggerStay()
+    public event Action onRunTriggerEnter;
+    public void RunTriggerEnter()
     {
-        if (onDragTriggerStay != null)
+        if (onRunTriggerEnter != null)
         {
-            onDragTriggerStay();
+            onRunTriggerEnter();
         }
     }
 
-    public event Action onDragTriggerExit;
-    public void DragTriggerExit()
+    public event Action onNoiseExit;
+    public void NoiseExit()
     {
-        if (onDragTriggerExit != null)
+        if (onNoiseExit != null)
         {
-            onDragTriggerExit();
+            onNoiseExit();
         }
     }
 }
