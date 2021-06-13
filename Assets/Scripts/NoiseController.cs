@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class NoiseController : MonoBehaviour
 {
-    public Slider debugSlider;
     public float MIN = 0f, MAX = 100f; 
     public float noise = 0.0f;
     public float defaultIncrement = 0.5f;
@@ -19,9 +18,6 @@ public class NoiseController : MonoBehaviour
         NoiseEvents.Instance.onRunTriggerEnter += OnTriggerRunEnter;
         NoiseEvents.Instance.onNoiseExit += OnNoiseExit;
         
-        //debug
-        debugSlider.minValue = MIN; 
-        debugSlider.maxValue = MAX;
         noise = 0.0f;
     }
 
@@ -29,8 +25,6 @@ public class NoiseController : MonoBehaviour
     {
         //debug
         noise += Time.deltaTime * increment;
-        // Debug.Log(_noise);
-        debugSlider.value = Mathf.Clamp(noise, MIN, MAX);
 
         if(noise >= 50f && noise <= 51f)
         {

@@ -93,7 +93,7 @@ public class NoiseManager : MonoBehaviour
         mental.isConvulsing = false;
 
         // Put character hide 
-        if(player.activeInHierarchy)
+        if(!player.activeInHierarchy)
         {
             controller.noise = 0f;
         }
